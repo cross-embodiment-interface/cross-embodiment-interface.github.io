@@ -39,6 +39,7 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 </head>
 <body>
 
@@ -119,7 +120,7 @@
                 </a>
               </span> -->
               <!-- Video Link. -->
-              <span class="link-block">
+              <!-- <span class="link-block">
                 <a href="#"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -127,7 +128,7 @@
                   </span>
                   <span>Video</span>
                 </a>
-              </span>
+              </span> -->
               <!-- Code Link. -->
               <!-- <span class="link-block">
                 <a href="#"
@@ -156,22 +157,19 @@
   </div>
 </section>
 
-<!-- <section class="hero teaser">
+<section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%">
+      <video id="teaser" controls height="100%">
         <source src="./static/videos/teaser.mp4"
                 type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
-        free-viewpoint
-        portraits.
+        <span><b><i>CEI</i></b></span> transfers robot manipulation data across different <b>embodiments</b>.
       </h2>
     </div>
   </div>
-</section> -->
-
+</section>
 
 <!-- <section class="hero is-light is-small">
   <div class="hero-body">
@@ -230,44 +228,22 @@
   </div>
 </section> -->
 
-
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
-    <!-- <div class="columns is-centered has-text-centered">
+    <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
+        <div class="teaser-image">
+          <img src="./static/images/teaser.png" alt="Teaser" width="100%">
+        </div>
         <div class="content has-text-justified">
           <p>
-            We present the first method capable of photorealistically reconstructing a non-rigidly
-            deforming scene using photos/videos captured casually from mobile phones.
-          </p>
-          <p>
-            Our approach augments neural radiance fields
-            (NeRF) by optimizing an
-            additional continuous volumetric deformation field that warps each observed point into a
-            canonical 5D NeRF.
-            We observe that these NeRF-like deformation fields are prone to local minima, and
-            propose a coarse-to-fine optimization method for coordinate-based models that allows for
-            more robust optimization.
-            By adapting principles from geometry processing and physical simulation to NeRF-like
-            models, we propose an elastic regularization of the deformation field that further
-            improves robustness.
-          </p>
-          <p>
-            We show that <span class="dnerf">Nerfies</span> can turn casually captured selfie
-            photos/videos into deformable NeRF
-            models that allow for photorealistic renderings of the subject from arbitrary
-            viewpoints, which we dub <i>"nerfies"</i>. We evaluate our method by collecting data
-            using a
-            rig with two mobile phones that take time-synchronized photos, yielding train/validation
-            images of the same pose at different viewpoints. We show that our method faithfully
-            reconstructs non-rigidly deforming scenes and reproduces unseen views with high
-            fidelity.
+            Robotic foundation models trained on large-scale manipulation datasets have shown promise in learning generalist policies but often overfit to specific viewpoints, robot arms, and especially parallel-jaw grippers due to dataset biases. To address this limitation, we propose Cross-Embodiment Interface (<b><i>CEI</i></b>), a framework for cross-embodiment learning that enables the transfer of demonstrations across different robot arm and end-effector morphologies. <b><i>CEI</i></b> introduces the concept of <i>functional similarity</i>, quantified using Directional Chamfer Distance, and aligns robot trajectories through gradient-based optimization, followed by synthesizing corresponding observations and actions for novel robot arms and end-effectors. In experiments, <b><i>CEI</i></b> transfers data and policies from a Franka Panda robot to <b>16</b> different embodiments across <b>3</b> tasks in simulation, and supports bidirectional transfer between a UR5+AG95 gripper robot and a UR5+Xhand robot across <b>6</b> real-world tasks. Extensive evaluations in both simulation and real world suggest that <b><i>CEI</i></b> facilitates effective cross-embodiment data generation, providing a step toward more scalable and generalizable robot learning across diverse embodiments.
           </p>
         </div>
       </div>
-    </div> -->
+    </div>
     <!--/ Abstract. -->
 
     <!-- Paper video. -->
@@ -284,140 +260,547 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Cross-Embodiment Transfer in Simulation</h2>
+    <br>
+    <p class="content has-text-justified">
+      Here we demonstrate the cross-embodiment transfer capability of <b><i>CEI</i></b> in simulation. In <b>3</b> different tasks, the source demonstrations in the left column
+      can be transferred to <b>16</b> target embodiments shown in the right column.
+    </p>
+    <h4 class="title is-4 has-text-centered">Evaluation Videos</h4>
+    <div class="container block is-centered">
+      <div class="columns is-centered">
+        <div class="column is-3" style="width: 30%;">
+          <div class="select" style="display: block;">
+            <select id="original-video" style="width: 100%;" onchange="selectOriginalVideo()">
+              <option value="1">Source #OpenDrawer</option>
+              <option value="2">Source #PickCube</option>
+              <option value="3">Source #StackCube</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-3" style="width: 30%;">
+          <div class="select" style="display: block;">
+            <select id="target-video" style="width: 100%;" onchange="selectTargetVideo()">
+              <option value="1">Panda+FourierRightHand</option>
+              <option value="2">Panda+FourierLeftHand</option>
+              <option value="3">Panda+InspireRightHand</option>
+              <option value="4">Panda+RobotiqGripper</option>
+              <option value="5">UR5e+FourierRightHand</option>
+              <option value="6">UR5e+FourierLeftHand</option>
+              <option value="7">UR5e+InspireRightHand</option>
+              <option value="8">UR5e+RobotiqGripper</option>
+              <option value="9">Kinova3+FourierRightHand</option>
+              <option value="10">Kinova3+FourierLeftHand</option>
+              <option value="11">Kinova3+InspireRightHand</option>
+              <option value="12">Kinova3+RobotiqGripper</option>
+              <option value="13">IIWA+FourierRightHand</option>
+              <option value="14">IIWA+FourierLeftHand</option>
+              <option value="15">IIWA+InspireRightHand</option>
+              <option value="16">IIWA+RobotiqGripper</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-2">
+          <button class="button is-info is-outlined" id="shuffle-transfer" style="width: 80%; color: #070707; border-color: #4d4d4e;">
+            <span class="icon">
+              <ion-icon name="shuffle-outline" role="img" class="md hydrated"></ion-icon>
+            </span>
+            <span>Shuffle</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <h4 class="title is-5">Source Embodiment</h4>
+        <video id="original-video-player" width="95%" height="95%" controls autoplay loop muted>
+          <source src="static/videos/sim_opendrawer/org.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-6">
+        <h4 class="title is-5">Target Embodiment</h4>
+        <video id="target-video-player" width="95%" height="95%" controls autoplay loop muted>
+          <source src="static/videos/sim_opendrawer/urfourierrighthand.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Quantitative Results</h4>
+        <figure class="image">
+          <img src="static/images/sim_results.png" alt="Success rates across different embodiments" width="100%">
+          <figcaption class="has-text-centered"><b>Table I:</b> Success rates of <b><i>CEI</i></b> across the 16 different embodiment combinations.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      These results indicate that despite variations in kinematics and morphology, <b><i>CEI</i></b> is capable of bridging the cross-embodiment gap by leveraging <i>functional similarity</i>.
+      We further observe that the difficulty of cross-embodiment transfer increases with the complexity and dexterity requirements of the task.
+    </p>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Ablation Study on Functional Similarity</h4>
+        <figure class="image">
+          <img src="static/images/action_ablation.png" alt="Ablation study on functional similarity" style="max-width: 80%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table II:</b> Ablation study on trajectory alignment across tasks and embodiments.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      The results show that <b><i>CEI</i></b> without <i>Directional Chamfer Distance</i> achieves an average success rate of only 32%, only half of <b><i>CEI</i></b>. In contrast, <i>Joint Mapping</i> fails across all tasks, primarily due to the discrepancies in the kinematics between different embodiments.
+    </p>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Ablation Study on Observation Synthesis</h4>
+        <figure class="image">
+          <img src="static/images/obs_ablation.png" alt="Ablation study on observation synthesis" style="max-width: 80%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table III:</b> Policy evaluation on synthesized data generated by <b><i></i>CEI</i></b>.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      Table III presents the policy evaluation results using synthesized cross-embodiment data.
+      Policies trained without any augmentation fail to complete the tasks, demonstrating the necessity of targeted data augmentation for cross-embodiment generalization. Additionally, removing Inference Augmentation results in a 22% drop in success rate.
+    </p>
+
+    <script>
+      // Store the standard options
+      const standardOptions = [
+        {value: '1', text: 'Panda+FourierRightHand'},
+        {value: '2', text: 'Panda+FourierLeftHand'},
+        {value: '3', text: 'Panda+InspireRightHand'},
+        {value: '4', text: 'Panda+RobotiqGripper'},
+        {value: '5', text: 'UR5e+FourierRightHand'},
+        {value: '6', text: 'UR5e+FourierLeftHand'},
+        {value: '7', text: 'UR5e+InspireRightHand'},
+        {value: '8', text: 'UR5e+RobotiqGripper'},
+        {value: '9', text: 'Kinova3+FourierRightHand'},
+        {value: '10', text: 'Kinova3+FourierLeftHand'},
+        {value: '11', text: 'Kinova3+InspireRightHand'},
+        {value: '12', text: 'Kinova3+RobotiqGripper'},
+        {value: '13', text: 'IIWA+FourierRightHand'},
+        {value: '14', text: 'IIWA+FourierLeftHand'},
+        {value: '15', text: 'IIWA+InspireRightHand'},
+        {value: '16', text: 'IIWA+RobotiqGripper'}
+      ];
+      
+      function updateTargetOptions(isStackcube) {
+        const targetSelect = document.getElementById('target-video');
+        const currentValue = targetSelect.value;
+        
+        // Clear existing options
+        targetSelect.innerHTML = '';
+        
+        // Add new options
+        standardOptions.forEach(option => {
+          const optionEl = document.createElement('option');
+          optionEl.value = option.value;
+          
+          // Mark robotiq options as failures for stackcube task
+          if (isStackcube && (option.value === '8' || option.value === '16')) {
+            optionEl.text = option.text + ' (Failure)';
+          } else {
+            optionEl.text = option.text;
+          }
+          
+          targetSelect.appendChild(optionEl);
+        });
+        
+        // Restore selected value if possible
+        if (currentValue && currentValue <= standardOptions.length) {
+          targetSelect.value = currentValue;
+        }
+      }
+      
+      function selectOriginalVideo() {
+        const originalSelect = document.getElementById('original-video');
+        const originalVideo = document.getElementById('original-video-player');
+        
+        const originalValue = originalSelect.value;
+        
+        if (originalValue === '1') {
+          originalVideo.src = `static/videos/sim_opendrawer/org.mp4`;
+          originalVideo.load();
+          
+          // Reset the options for opendrawer
+          updateTargetOptions(false);
+        } else if (originalValue === '2') {
+          originalVideo.src = `static/videos/sim_pickcube/org.mp4`;
+          originalVideo.load();
+          
+          // Reset the options for pickcube
+          updateTargetOptions(false);
+        } else if (originalValue === '3') {
+          originalVideo.src = `static/videos/sim_stackcube/org.mp4`;
+          originalVideo.load();
+          
+          // Update options to mark robotiq as failures for stackcube
+          updateTargetOptions(true);
+        }
+        
+        selectTargetVideo();
+      }
+      
+      function selectTargetVideo() {
+        const originalSelect = document.getElementById('original-video');
+        const targetSelect = document.getElementById('target-video');
+        const targetVideo = document.getElementById('target-video-player');
+        
+        const originalValue = originalSelect.value;
+        const targetValue = targetSelect.value;
+        
+        let taskFolder = '';
+        if (originalValue === '1') taskFolder = 'sim_opendrawer';
+        else if (originalValue === '2') taskFolder = 'sim_pickcube';
+        else if (originalValue === '3') taskFolder = 'sim_stackcube';
+        
+        // Map target options to embodiment names with correct filename format
+        let embodiment = '';
+        if (targetValue === '1') embodiment = 'pandafourierrighthand';
+        else if (targetValue === '2') embodiment = 'pandafourierlefthand';
+        else if (targetValue === '3') embodiment = 'pandainspirerighthand';
+        else if (targetValue === '4') embodiment = 'pandarobotiq'; // Just robotiq, not robotiqgripper
+        else if (targetValue === '5') embodiment = 'urfourierrighthand';
+        else if (targetValue === '6') embodiment = 'urfourierlefthand';
+        else if (targetValue === '7') embodiment = 'urinspirerighthand';
+        else if (targetValue === '8') embodiment = 'urrobotiq';
+        else if (targetValue === '9') embodiment = 'kinovafourierrighthand'; // Note: capital K
+        else if (targetValue === '10') embodiment = 'kinovafourierlefthand';
+        else if (targetValue === '11') embodiment = 'kinovainspirerighthand';
+        else if (targetValue === '12') embodiment = 'kinovarobotiq';
+        else if (targetValue === '13') embodiment = 'iiwafourierrighthand';
+        else if (targetValue === '14') embodiment = 'iiwafourierlefthand';
+        else if (targetValue === '15') embodiment = 'iiwainspirerighthand';
+        else if (targetValue === '16') embodiment = 'iiwarobotiq';
+        
+        targetVideo.src = `static/videos/${taskFolder}/${embodiment}.mp4`;
+        targetVideo.load();
+      }
+      
+      document.getElementById('shuffle-transfer').addEventListener('click', function() {
+        const originalSelect = document.getElementById('original-video');
+        const targetSelect = document.getElementById('target-video');
+        
+        const randomOriginal = Math.floor(Math.random() * 3) + 1;
+        const randomTarget = Math.floor(Math.random() * 16) + 1;
+        
+        originalSelect.value = randomOriginal;
+        targetSelect.value = randomTarget;
+        
+        selectOriginalVideo();
+      });
+      
+      // Initialize the dropdown options
+      updateTargetOptions(false);
+    </script>
+  </div>
+</section>
+
 
 <section class="section">
   <div class="container is-max-desktop">
-
-    <div class="columns is-centered">
-
-      <!-- Visual Effects. -->
-      <!-- <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Visual Effects</h2>
-          <p>
-            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
-            would be impossible without nerfies since it would require going through a wall.
-          </p>
-          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dollyzoom-stacked.mp4"
-                    type="video/mp4">
-          </video>
+    <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Bidirectional Transfer in Real World</h2>
+    <br>
+    <p class="content has-text-justified">
+      We evaluate bidirectional transfer between the AG95 gripper and Xhand on <b>6</b> real-world tasks: PushCube, OpenDrawer, PlaceBird, PickCup, PackageBread, and InsertFlower. For the first three tasks, we collect 25 AG95 demonstrations and transfer to Xhand; for the latter three, we collect 25 Xhand demonstrations and transfer to AG95.
+      DP3 policies are trained on <b><i>CEI</i></b>-generated data and evaluated over 10 trials per task.
+    </p>
+    <h4 class="title is-4 has-text-centered">Generated Data Visualization</h4>
+    <p class="content has-text-justified">
+      Below are examples of data generated by <b><i>CEI</i></b> for different tasks. Select a task to view the corresponding visualization.
+    </p>
+    
+    <div class="container block is-centered">
+      <div class="columns is-centered">
+        <div class="column is-2">
+          <button class="button is-info is-outlined task-button" data-task="opendrawer" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            OpenDrawer
+          </button>
         </div>
-      </div> -->
-      <!--/ Visual Effects. -->
-
-      <!-- Matting. -->
-      <!-- <div class="column">
-        <h2 class="title is-3">Matting</h2>
-        <div class="columns is-centered">
-          <div class="column content">
-            <p>
-              As a byproduct of our method, we can also solve the matting problem by ignoring
-              samples that fall outside of a bounding box during rendering.
-            </p>
-            <video id="matting-video" controls playsinline height="100%">
-              <source src="./static/videos/matting.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-
+        <div class="column is-2">
+          <button class="button is-info is-outlined task-button" data-task="placebird" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            PlaceBird
+          </button>
         </div>
-      </div> -->
-    </div>
-    <!--/ Matting. -->
-
-    <!-- Animation. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <!-- <h2 class="title is-3">Animation</h2> -->
-
-        <!-- Interpolating. -->
-        <!-- <h3 class="title is-4">Interpolating states</h3>
-        <div class="content has-text-justified">
-          <p>
-            We can also animate the scene by interpolating the deformation latent codes of two input
-            frames. Use the slider here to linearly interpolate between the left frame and the right
-            frame.
-          </p>
+        <div class="column is-2">
+          <button class="button is-info is-outlined task-button" data-task="packagebread" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            PackageBread
+          </button>
         </div>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_start.jpg"
-                 class="interpolation-image"
-                 alt="Interpolate start reference image."/>
-            <p>Start Frame</p>
-          </div>
-          <div class="column interpolation-video-column">
-            <div id="interpolation-image-wrapper">
-              Loading...
-            </div>
-            <input class="slider is-fullwidth is-large is-info"
-                   id="interpolation-slider"
-                   step="1" min="0" max="100" value="0" type="range">
-          </div>
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_end.jpg"
-                 class="interpolation-image"
-                 alt="Interpolation end reference image."/>
-            <p class="is-bold">End Frame</p>
-          </div>
-        </div>
-        <br/> -->
-        <!--/ Interpolating. -->
-
-        <!-- Re-rendering. -->
-        <!-- <h3 class="title is-4">Re-rendering the input video</h3>
-        <div class="content has-text-justified">
-          <p>
-            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
-            viewpoint such as a stabilized camera by playing back the training deformations.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <video id="replay-video"
-                 controls
-                 muted
-                 preload
-                 playsinline
-                 width="75%">
-            <source src="./static/videos/replay.mp4"
-                    type="video/mp4">
-          </video>
-        </div> -->
-        <!--/ Re-rendering. -->
-
-      </div>
-    </div>
-    <!--/ Animation. -->
-
-
-    <!-- Concurrent Work. -->
-    <!-- <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-
-        <div class="content has-text-justified">
-          <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
-          </p>
-          <p>
-            <a href="#">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
-          </p>
-          <p>
-            <a href="#">D-NeRF</a> and <a href="#">NR-NeRF</a>
-            both use deformation fields to model non-rigid scenes.
-          </p>
-          <p>
-            Some works model videos with a NeRF by directly modulating the density, such as <a href="#">Video-NeRF</a>, <a href="#">NSFF</a>, and <a href="#">DyNeRF</a>
-          </p>
-          <p>
-            There are probably many more by the time you are reading this. Check out <a href="#">survey on recent NeRF papers</a>, and <a href="#">curated list of NeRF papers</a>.
-          </p>
+        <div class="column is-2">
+          <button class="button is-info is-outlined task-button" data-task="insertflower" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            InsertFlower
+          </button>
         </div>
       </div>
-    </div> -->
-    <!--/ Concurrent Work. -->
+    </div>
+    
+    <div class="columns is-centered">
+      <div class="column is-5">
+        <h4 class="title is-5">Source Data</h4>
+        <video id="visualization-video-source" width="95%" height="95%" autoplay loop muted>
+          <source src="static/videos/point_cloud/OpenDrawer.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-5">
+        <h4 class="title is-5">Target Data</h4>
+        <video id="visualization-video-target" width="95%" height="95%" autoplay loop muted>
+          <source src="static/videos/point_cloud/OpenDrawer_synthesis.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const taskButtons = document.querySelectorAll('.task-button');
+        const sourceVideo = document.getElementById('visualization-video-source');
+        const targetVideo = document.getElementById('visualization-video-target');
+        
+        // Set the first button as active by default
+        taskButtons[0].classList.add('is-active');
+        
+        taskButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            taskButtons.forEach(btn => btn.classList.remove('is-active'));
+            
+            // Add active class to clicked button
+            this.classList.add('is-active');
+            
+            // Get the task name from data attribute
+            const task = this.getAttribute('data-task');
+            
+            // Update video sources for both source and target
+            sourceVideo.src = `static/videos/point_cloud/${task}.mp4`;
+            targetVideo.src = `static/videos/point_cloud/${task}_synthesis.mp4`;
+            
+            // Load and play both videos
+            sourceVideo.load();
+            targetVideo.load();
+            sourceVideo.play();
+            targetVideo.play();
+          });
+        });
+      });
+    </script>
+    
+    <style>
+      .task-button.is-active {
+        background-color: #62aee1;
+        color: rgb(18, 18, 19) !important;
+        border-color: #32b7dc;
+        font-weight: bold;
+      }
+    </style>
+    <h4 class="title is-4 has-text-centered">Evaluation Videos</h4>
+    <div class="container block is-centered">
+      <div class="columns is-centered">
+        <div class="column is-3" style="width: 30%;">
+          <div class="select" style="display: block;">
+            <select id="transfer-direction" style="width: 100%;" onchange="updateTaskOptions()">
+              <option value="ag95_to_xhand">AG95 → Xhand</option>
+              <option value="xhand_to_ag95">Xhand → AG95</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-3" style="width: 30%;">
+          <div class="select" style="display: block;">
+            <select id="real-world-task" style="width: 100%;" onchange="selectRealWorldVideo()">
+              <!-- Task options will be populated dynamically -->
+            </select>
+          </div>
+        </div>
+        <div class="column is-2">
+          <button class="button is-info is-outlined" id="shuffle-real-world" style="width: 80%; color: #070707; border-color: #4d4d4e;">
+            <span class="icon">
+              <ion-icon name="shuffle-outline" role="img" class="md hydrated"></ion-icon>
+            </span>
+            <span>Shuffle</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <h4 class="title is-5 has-text-centered">Source Embodiment</h4>
+        <video id="source-video-player" width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/PushCube_source.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-6">
+        <h4 class="title is-5 has-text-centered">Target Embodiment</h4>
+        <video id="real-target-video-player" width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/PushCube_target.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Quantitative Results</h4>
+        <figure class="image">
+          <img src="static/images/realworld_results.png" alt="Success rates across 6 tasks" style="max-width: 90%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table IV:</b> Real world evaluation.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      Table IV demonstrates the bidirectional transfer capabilities of <b><i>CEI</i></b> on real-world tasks. We compare policies trained on synthesized data against those trained on source data.
+      Overall, <b><i>CEI</i></b> reaches an average success rate of <b>70%</b>, approaching the source performance.
+    </p>
+
+    <script>
+      // Define tasks by transfer direction
+      const tasksByDirection = {
+        'ag95_to_xhand': [
+          {value: 'pushcube', text: 'Push Cube'},
+          {value: 'opendrawer', text: 'Open Drawer'},
+          {value: 'placebird', text: 'Place Bird'}
+        ],
+        'xhand_to_ag95': [
+          {value: 'pickcup', text: 'Pick Cup'},
+          {value: 'packagebread', text: 'Package Bread'},
+          {value: 'insertflower', text: 'Insert Flower'}
+        ]
+      };
+      
+      function updateTaskOptions() {
+        const directionSelect = document.getElementById('transfer-direction');
+        const taskSelect = document.getElementById('real-world-task');
+        const direction = directionSelect.value;
+        
+        // Clear existing options
+        taskSelect.innerHTML = '';
+        
+        // Add new options based on selected direction
+        tasksByDirection[direction].forEach(task => {
+          const option = document.createElement('option');
+          option.value = task.value;
+          option.text = task.text;
+          taskSelect.appendChild(option);
+        });
+        
+        // Update the videos with the first task from the new direction
+        selectRealWorldVideo();
+      }
+      
+      function selectRealWorldVideo() {
+        const directionSelect = document.getElementById('transfer-direction');
+        const taskSelect = document.getElementById('real-world-task');
+        const sourceVideo = document.getElementById('source-video-player');
+        const targetVideo = document.getElementById('real-target-video-player');
+        
+        const direction = directionSelect.value;
+        const taskName = taskSelect.value;
+        
+        // Load videos based on the selected task and direction
+        sourceVideo.src = `static/videos/real_world/${taskName}_source.mp4`;
+        targetVideo.src = `static/videos/real_world/${taskName}_target.mp4`;
+        
+        sourceVideo.load();
+        targetVideo.load();
+      }
+      
+      document.getElementById('shuffle-real-world').addEventListener('click', function() {
+        const directionSelect = document.getElementById('transfer-direction');
+        const taskSelect = document.getElementById('real-world-task');
+        
+        // Randomly select a direction
+        const directions = ['ag95_to_xhand', 'xhand_to_ag95'];
+        const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+        directionSelect.value = randomDirection;
+        
+        // Update task options for the selected direction
+        updateTaskOptions();
+        
+        // Randomly select a task from the available options
+        const availableTasks = tasksByDirection[randomDirection];
+        const randomTaskIndex = Math.floor(Math.random() * availableTasks.length);
+        taskSelect.selectedIndex = randomTaskIndex;
+        
+        // Update videos
+        selectRealWorldVideo();
+      });
+      
+      // Initialize the task options and videos
+      updateTaskOptions();
+    </script>
+
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Adaptation to External Disturbances</h2>
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <video id="source-video-player" width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/Disturbance.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Failure Cases</h2>
+    <div class="columns is-centered">
+      <div class="column is-4">
+        <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/failure_case1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-4">
+        <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/failure_case2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-4">
+        <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/failure_case3.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Extensions</h2>
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Multimodal Data Generation</h2>
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/Multimodality1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-6">
+        <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/Multimodality2.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      During data synthesis, we observe that initializing the embodiment from different joint configurations leads to multimodal alignment outcomes, as the functional correspondences between parallel grippers and dexterous hands are inherently multimodal. This property can be leveraged by manipulating joint initialization through randomization or heuristic strategies. 
+    </p>
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Spatial Generalization</h2>
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <video width="95%" height="95%" autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/spatial_generalization1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-6">
+        <video width="95%" height="95%" autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/real_world/spatial_generalization2.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      For spatial generalization, we apply transformations to the point cloud after cropping of source embodiment and incorporate the transformation bias into the functional representations. The target embodiment is then aligned to the transformed trajectories, corresponding to the transformed object configurations. This process enables data synthesis expanded across 3D space.
+    </p>
   </div>
 </section>
 
