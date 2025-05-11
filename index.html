@@ -262,6 +262,25 @@
 
 <section class="section">
   <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <video id="method" autoplay loop muted height="100%">
+          <source src="./static/videos/method.mp4"
+                  type="video/mp4">
+        </video>
+        <div class="content has-text-justified">
+          <p>
+            <b><i>CEI</i></b> leverages a novel notion of <b>functional similarity</b>, which captures shared object interaction behaviors across different end-effectors, to align demonstrations from a source embodiment to a target embodiment. This is accomplished by quantifying <b>functional similarity</b> using the <b>Directional Chamfer Distance</b> between manually selected functional representations, aligning trajectories via gradient-based optimization, and synthesizing observations and actions for the target robot.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
     <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Cross-Embodiment Transfer in Simulation</h2>
     <br>
     <p class="content has-text-justified">
@@ -522,22 +541,22 @@
     <div class="container block is-centered">
       <div class="columns is-centered">
         <div class="column is-2">
-          <button class="button is-info is-outlined task-button" data-task="opendrawer" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+          <button class="button is-info is-outlined task-button" data-task="OpenDrawer" style="width: 100%; color: #070707; border-color: #4d4d4e;">
             OpenDrawer
           </button>
         </div>
         <div class="column is-2">
-          <button class="button is-info is-outlined task-button" data-task="placebird" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+          <button class="button is-info is-outlined task-button" data-task="PlaceBird" style="width: 100%; color: #070707; border-color: #4d4d4e;">
             PlaceBird
           </button>
         </div>
         <div class="column is-2">
-          <button class="button is-info is-outlined task-button" data-task="packagebread" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+          <button class="button is-info is-outlined task-button" data-task="PackageBread" style="width: 100%; color: #070707; border-color: #4d4d4e;">
             PackageBread
           </button>
         </div>
         <div class="column is-2">
-          <button class="button is-info is-outlined task-button" data-task="insertflower" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+          <button class="button is-info is-outlined task-button" data-task="InsertFlower" style="width: 100%; color: #070707; border-color: #4d4d4e;">
             InsertFlower
           </button>
         </div>
@@ -664,14 +683,14 @@
       // Define tasks by transfer direction
       const tasksByDirection = {
         'ag95_to_xhand': [
-          {value: 'pushcube', text: 'Push Cube'},
-          {value: 'opendrawer', text: 'Open Drawer'},
-          {value: 'placebird', text: 'Place Bird'}
+          {value: 'PushCube', text: 'Push Cube'},
+          {value: 'OpenDrawer', text: 'Open Drawer'},
+          {value: 'PlaceBird', text: 'Place Bird'}
         ],
         'xhand_to_ag95': [
-          {value: 'pickcup', text: 'Pick Cup'},
-          {value: 'packagebread', text: 'Package Bread'},
-          {value: 'insertflower', text: 'Insert Flower'}
+          {value: 'PickCup', text: 'Pick Cup'},
+          {value: 'PackageBread', text: 'Package Bread'},
+          {value: 'InsertFlower', text: 'Insert Flower'}
         ]
       };
       
