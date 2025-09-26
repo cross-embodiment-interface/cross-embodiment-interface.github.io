@@ -89,7 +89,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title"><i>CEI</i> : A Unified Interface for Cross-Embodiment Visuomotor Policy Learning</h1>
+          <h1 class="title is-1 publication-title"><i>CEI</i> : A Unified Interface for Cross-Embodiment Visuomotor Policy Learning in 3D Space</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">Anonymous Authors</span>
           </div>
@@ -239,7 +239,7 @@
         </div>
         <div class="content has-text-justified">
           <p>
-            Robotic foundation models trained on large-scale manipulation datasets have shown promise in learning generalist policies but often overfit to specific viewpoints, robot arms, and especially parallel-jaw grippers due to dataset biases. To address this limitation, we propose Cross-Embodiment Interface (<b><i>CEI</i></b>), a framework for cross-embodiment learning that enables the transfer of demonstrations across different robot arm and end-effector morphologies. <b><i>CEI</i></b> introduces the concept of <i>functional similarity</i>, quantified using Directional Chamfer Distance, and aligns robot trajectories through gradient-based optimization, followed by synthesizing corresponding observations and actions for novel robot arms and end-effectors. In experiments, <b><i>CEI</i></b> transfers data and policies from a Franka Panda robot to <b>16</b> different embodiments across <b>3</b> tasks in simulation, and supports bidirectional transfer between a UR5+AG95 gripper robot and a UR5+Xhand robot across <b>6</b> real-world tasks. Extensive evaluations in both simulation and real world suggest that <b><i>CEI</i></b> facilitates effective cross-embodiment data generation, providing a step toward more scalable and generalizable robot learning across diverse embodiments.
+            Robotic foundation models trained on large-scale manipulation datasets have shown promise in learning generalist policies, but they often overfit to specific viewpoints, robot arms, and especially parallel-jaw grippers due to dataset biases. To address this limitation, we propose Cross-Embodiment Interface (<i><b>CEI</b></i>), a framework for cross-embodiment learning that enables the transfer of demonstrations across different robot arm and end-effector morphologies. <i><b>CEI</b></i> introduces the concept of <b>functional similarity</b>, which is quantified using Directional Chamfer Distance. Then it aligns robot trajectories through gradient-based optimization, followed by synthesizing observations and actions for unseen robot arms and end-effectors. In experiments, <i><b>CEI</b></i> transfers data and policies from a Franka Panda robot to <b>16</b> different embodiments across <b>3</b> tasks in simulation, and supports bidirectional transfer between a UR5+AG95 gripper robot and a UR5+Xhand robot across <b>6</b> real-world tasks, achieving an average transfer ratio of <b>82.4%</b>. Finally, we demonstrate that <i><b>CEI</b></i> can also be extended with spatial generalization and multimodal motion generation capabilities using our proposed techniques.
           </p>
         </div>
       </div>
@@ -282,12 +282,17 @@
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Cross-Embodiment Transfer in Simulation</h2>
+    <div style="text-align: center;">
+      <img src="static/images/simulation_env.png" alt="Simulation Environment" width="70%">
+    </div>
     <br>
     <p class="content has-text-justified">
       Here we demonstrate the cross-embodiment transfer capability of <b><i>CEI</i></b> in simulation. In <b>3</b> different tasks, the source demonstrations in the left column
       can be transferred to <b>16</b> target embodiments shown in the right column.
     </p>
-    <h4 class="title is-4 has-text-centered">Evaluation Videos</h4>
+
+    <br>
+    <h4 class="title is-4 has-text-centered">Evaluation Videos (👆Click to Select !)</h4>
     <div class="container block is-centered">
       <div class="columns is-centered">
         <div class="column is-3" style="width: 30%;">
@@ -364,30 +369,44 @@
 
     <div class="columns is-centered">
       <div class="column is-10">
-        <h4 class="title is-4 has-text-centered">Ablation Study on Functional Similarity</h4>
+        <h4 class="title is-4 has-text-centered">Ablation Study on Cross-Embodiment Techniques</h4>
         <figure class="image">
-          <img src="static/images/action_ablation.png" alt="Ablation study on functional similarity" style="max-width: 80%; display: block; margin: 0 auto;">
+          <img src="static/images/action_ablation.jpeg" alt="Ablation study on functional similarity" style="max-width: 60%; display: block; margin: 0 auto;">
           <figcaption class="has-text-centered"><b>Table II:</b> Ablation study on trajectory alignment across tasks and embodiments.</figcaption>
         </figure>
       </div>
     </div>
 
     <p class="content" style="text-align: left; margin-top: 1em;">
-      The results show that <b><i>CEI</i></b> without <i>Directional Chamfer Distance</i> achieves an average success rate of only 32%, only half of <b><i>CEI</i></b>. In contrast, <i>Joint Mapping</i> fails across all tasks, primarily due to the discrepancies in the kinematics between different embodiments.
+      The results show that <b><i>CEI</i></b> without <i>Directional Chamfer Distance</i> achieves an average success rate of only 32%, only half of <b><i>CEI</i></b>. BMS completely failed in the PickCube and StackCube tasks, as it is challenging to manually determine optimal open and close poses, and the linear interpolation often leads to unstable grasps. Moreover, although BMS constrains the target embodiment to an opening degree similar to that of the source, discrepancies between the two end-effectors (e.g. the distance from grasp point to end-effector frame) result in frequent failures
+    </p>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Ablation Study on Functional Representations</h4>
+        <figure class="image">
+          <img src="static/images/sensitivity.png" alt="Sensitivity Analysis of the Functional representations" style="max-width: 60%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table III:</b> Sensitivity analysis of the functional representations.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      We found that although we select three different functional representations, their success rates remain comparable, suggesting that <i><b>CEI</b></i> is robust to such variations and exhibits low sensitivity to the choice of functional representation.
     </p>
 
     <div class="columns is-centered">
       <div class="column is-10">
         <h4 class="title is-4 has-text-centered">Ablation Study on Observation Synthesis</h4>
         <figure class="image">
-          <img src="static/images/obs_ablation.png" alt="Ablation study on observation synthesis" style="max-width: 80%; display: block; margin: 0 auto;">
-          <figcaption class="has-text-centered"><b>Table III:</b> Policy evaluation on synthesized data generated by <b><i></i>CEI</i></b>.</figcaption>
+          <img src="static/images/obs_ablation.jpeg" alt="Ablation study on observation synthesis" style="max-width: 60%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table IV:</b> Policy evaluation on synthesized data generated by <b><i></i>CEI</i></b>.</figcaption>
         </figure>
       </div>
     </div>
 
     <p class="content" style="text-align: left; margin-top: 1em;">
-      Table III presents the policy evaluation results using synthesized cross-embodiment data.
+      Table IV presents the policy evaluation results using synthesized cross-embodiment data.
       Policies trained without any augmentation fail to complete the tasks, demonstrating the necessity of targeted data augmentation for cross-embodiment generalization. Additionally, removing Inference Augmentation results in a 22% drop in success rate.
     </p>
 
@@ -528,12 +547,15 @@
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Bidirectional Transfer in Real World</h2>
+    <div style="text-align: center;">
+      <img src="static/images/real_tasks.png" alt="Real World Tasks" width="80%">
+    </div>
     <br>
     <p class="content has-text-justified">
       We evaluate bidirectional transfer between the AG95 gripper and Xhand on <b>6</b> real-world tasks: PushCube, OpenDrawer, PlaceBird, PickCup, PackageBread, and InsertFlower. For the first three tasks, we collect 25 AG95 demonstrations and transfer to Xhand; for the latter three, we collect 25 Xhand demonstrations and transfer to AG95.
       DP3 policies are trained on <b><i>CEI</i></b>-generated data and evaluated over 10 trials per task.
     </p>
-    <h4 class="title is-4 has-text-centered">Generated Data Visualization</h4>
+    <h4 class="title is-4 has-text-centered">Generated Data Visualization (👆Click to Select !)</h4>
     <p class="content has-text-justified">
       Below are examples of data generated by <b><i>CEI</i></b> for different tasks. Select a task to view the corresponding visualization.
     </p>
@@ -620,7 +642,7 @@
         font-weight: bold;
       }
     </style>
-    <h4 class="title is-4 has-text-centered">Evaluation Videos</h4>
+    <h4 class="title is-4 has-text-centered">Qualitative Evaluation (👆Click to Select !)</h4>
     <div class="container block is-centered">
       <div class="columns is-centered">
         <div class="column is-3" style="width: 30%;">
@@ -668,16 +690,27 @@
       <div class="column is-10">
         <h4 class="title is-4 has-text-centered">Quantitative Results</h4>
         <figure class="image">
-          <img src="static/images/realworld_results.png" alt="Success rates across 6 tasks" style="max-width: 90%; display: block; margin: 0 auto;">
-          <figcaption class="has-text-centered"><b>Table IV:</b> Real world evaluation.</figcaption>
+          <img src="static/images/realworld_results.jpeg" alt="Success rates across 6 tasks" style="max-width: 70%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table V:</b> Real world evaluation.</figcaption>
         </figure>
       </div>
     </div>
 
     <p class="content" style="text-align: left; margin-top: 1em;">
-      Table IV demonstrates the bidirectional transfer capabilities of <b><i>CEI</i></b> on real-world tasks. We compare policies trained on synthesized data against those trained on source data.
-      Overall, <b><i>CEI</i></b> reaches an average success rate of <b>70%</b>, approaching the source performance.
+      Table V demonstrates the bidirectional transfer capabilities of <b><i>CEI</i></b> on real-world tasks. We compare policies trained on synthesized data against those trained on source data.
+      Overall, <b><i>CEI</i></b> reaches an average success rate of <b>70%</b>, with a transfer ratio (success rate of <b><i>CEI</i></b> divided by that of the source embodiment) of <b>82.4%</b>.
     </p>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h4 class="title is-4 has-text-centered">Time Cost of Transfer</h4>
+        <figure class="image">
+          <img src="static/images/time_cost.png" alt="Time cost for generating real-world demonstrations" style="max-width: 70%; display: block; margin: 0 auto;">
+          <figcaption class="has-text-centered"><b>Table VI:</b> Time cost for generating real-world demonstrations.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <p class="content" style="text-align: left; margin-top: 1em;"> <b><i>CEI</i></b> requires significantly less time than MimicGen, which highly depends on online execution. DemoGen generates hundreds of demonstrations in one second, while <b><i>CEI</i></b> requires several minutes since it utilizes gradient-based optimization.</p>
 
     <script>
       // Define tasks by transfer direction
@@ -787,8 +820,128 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Extensions</h2>
+    <h2 class="title is-3" style="margin-bottom: 0.8em; margin-top: 1.5em">Broader Applications</h2>
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Spatial Generalization</h2>
+    <div class="columns is-centered">
+      <figure class="image">
+        <img src="static/images/spatial_generalization.png" alt="Spatial Generalization" style="max-width: 90%; display: block; margin: 0 auto;">
+      </figure>
+    </div>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      For spatial generalization, we first apply transform to the functional representation trajectory with clipped linear growth. The target embodiment is subsequently aligned to the augmented trajectory through the standard <i><b></b>CEI</b></i> optimization procedure. The augmented point cloud is then obtained by applying the transform to the object point cloud and synthesizing the robot point cloud according to the augmented trajectory. Results show that our approach extends the policy to press the button over a wide area of the table, rather than being limited to the original position.
+    </p>
+
+    <p class="content has-text-justified">
+      Below are 10 video examples demonstrating <b><i>CEI</i></b>'s spatial generalization ability. 
+      <b>Click on a button to play the video !</b>
+    </p>
+
+    <!-- 视频选择按钮 -->
+    <div class="container block is-centered">
+      <div class="columns is-multiline is-centered">
+        <!-- 自动生成10个按钮 -->
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="1" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 1
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="2" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 2
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="3" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 3
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="4" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 4
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="5" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 5
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="6" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 6
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="7" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 7
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="8" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 8
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="9" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 9
+          </button>
+        </div>
+        <div class="column is-2" style="margin-bottom: 0.5em;">
+          <button class="button is-info is-outlined video-button" data-video="10" style="width: 100%; color: #070707; border-color: #4d4d4e;">
+            Video 10
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 视频播放器 -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <video id="spatial-video-player" width="100%" controls autoplay loop muted style="display: block; margin: 0 auto;">
+          <source src="static/videos/spatial_generalization/spatial_generalization1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.video-button');
+        const videoPlayer = document.getElementById('spatial-video-player');
+
+        // 默认激活第一个按钮
+        buttons[0].classList.add('is-active');
+
+        buttons.forEach(button => {
+          button.addEventListener('click', function () {
+            // 移除所有按钮的active状态
+            buttons.forEach(btn => btn.classList.remove('is-active'));
+            // 当前按钮高亮
+            this.classList.add('is-active');
+
+            // 获取视频编号
+            const videoIndex = this.getAttribute('data-video');
+            // 更新视频路径
+            videoPlayer.src = `static/videos/spatial_generalization/spatial_generalization${videoIndex}.mp4`;
+            videoPlayer.load();
+            videoPlayer.play();
+          });
+        });
+      });
+    </script>
+
+    <style>
+      .video-button.is-active {
+        background-color: #62aee1;
+        color: rgb(18, 18, 19) !important;
+        border-color: #32b7dc;
+        font-weight: bold;
+      }
+    </style>
+    
     <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Multimodal Data Generation</h2>
+    <figure class="image">
+      <img src="static/images/multimodality.png" alt="Multimodal Data Generation" style="max-width: 80%; display: block; margin: 0 auto;">
+    </figure>
+    <br>
     <div class="columns is-centered">
       <div class="column is-6">
         <video width="95%" height="95%" controls autoplay loop muted style="display: block; margin: 0 auto;">
@@ -802,23 +955,7 @@
       </div>
     </div>
     <p class="content" style="text-align: left; margin-top: 1em;">
-      During data synthesis, we observe that initializing the embodiment from different joint configurations leads to multimodal alignment outcomes, as the functional correspondences between parallel grippers and dexterous hands are inherently multimodal. This property can be leveraged by manipulating joint initialization through randomization or heuristic strategies. 
-    </p>
-    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">Spatial Generalization</h2>
-    <div class="columns is-centered">
-      <div class="column is-6">
-        <video width="95%" height="95%" autoplay loop muted style="display: block; margin: 0 auto;">
-          <source src="static/videos/real_world/spatial_generalization1.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="column is-6">
-        <video width="95%" height="95%" autoplay loop muted style="display: block; margin: 0 auto;">
-          <source src="static/videos/real_world/spatial_generalization2.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-    <p class="content" style="text-align: left; margin-top: 1em;">
-      For spatial generalization, we apply transformations to the point cloud after cropping of source embodiment and incorporate the transformation bias into the functional representations. The target embodiment is then aligned to the transformed trajectories. This process enables data synthesis expanded across 3D space.
+      During data synthesis, we observe that initializing the embodiment from different joint configurations leads to multimodal alignment outcomes, as the functional correspondences between parallel grippers and dexterous hands are inherently multimodal. This property can be leveraged by manipulating joint initialization through Elite-based Initialization Strategy (EIS). 
     </p>
   </div>
 </section>
