@@ -91,26 +91,33 @@
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title"><i>CEI</i> : A Unified Interface for Cross-Embodiment Visuomotor Policy Learning in 3D Space</h1>
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Anonymous Authors</span>
+            <span class="author-block">Tong Wu<sup>1&dagger;</sup>, Shoujie Li<sup>1,2&dagger;</sup>, Junhao Gong<sup>1</sup>, Changqing Guo<sup>1</sup>, Xingting Li<sup>1</sup>, Shilong Mu<sup>3</sup>, Wenbo Ding<sup>1</sup></span>
           </div>
-
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Anonymous Institution</span>
+            <span class="author-block"><sup>&dagger;</sup>Equal contribution</span>
           </div>
-
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Shenzhen International Graduate School, Tsinghua University</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>2</sup>School of Mechanical and Aerospace Engineering, Nanyang Technological University</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>3</sup>Xspark AI</span>
+          </div>
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
-              <!-- <span class="link-block">
-                <a href="#"
+              <span class="link-block">
+                <a href="static/pdf/CEI.pdf"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                   </span>
                   <span>Paper</span>
                 </a>
-              </span> -->
-              <!-- <span class="link-block">
+              </span>
+              <span class="link-block">
                 <a href="#"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -118,7 +125,7 @@
                   </span>
                   <span>arXiv</span>
                 </a>
-              </span> -->
+              </span>
               <!-- Video Link. -->
               <!-- <span class="link-block">
                 <a href="#"
@@ -948,6 +955,25 @@
     <p class="content" style="text-align: left; margin-top: 1em;">
       During data synthesis, we observe that initializing the embodiment from different joint configurations leads to multimodal alignment outcomes, as the functional correspondences between parallel grippers and dexterous hands are inherently multimodal. This property can be leveraged by manipulating joint initialization through Elite-based Initialization Strategy (EIS). 
     </p>
+    <h2 class="title is-4" style="margin-bottom: 0.8em; margin-top: 1.5em">CEI with RGB Inputs</h2>
+    <figure class="image">
+      <img src="static/images/CEI-RGB.png" alt="CEI with RGB Inputs" style="max-width: 80%; display: block; margin: 0 auto;">
+    </figure>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      Our method is compatible with RGB inputs by replacing the point cloud editing module with image augmentation module. We employ the Segment Anything Model (SAM) to mask the source robot, followed by ProPainter to reconstruct the background and object. To render the target embodiment, we retrieve the visual observation that best matches the aligned joint states from a pre-collected image-action library, using the lowest L2 distance as the selection metric, and use SAM to obtain the segmented robot. Finally, we composite the retrieved target robot into the inpainted background to generate the synthetic 2D observation.
+    </p>
+    <figure class="image">
+      <img src="static/images/pickcube_RGB.png" alt="Evaluation on PickCube" style="max-width: 80%; display: block; margin: 0 auto;">
+    </figure>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      We selected the simulated PickCube task to validate this pipeline. Qualitative results confirm the pipeline's ability to synthesize visually plausible observations. We subsequently evaluated a 2D diffusion policy trained on the generated data, denoted as CEI-RGB. As illustrated in the Figure, CEI-RGB achieves comparable performance with the standard CEI, operating without depth modalities.
+    </p>
+    <figure class="image">
+      <img src="static/images/RGB-results.png" alt="Real-world Transfer Results" style="max-width: 80%; display: block; margin: 0 auto;">
+    </figure>
+    <p class="content" style="text-align: left; margin-top: 1em;">
+      We also selected PickCup as the representative real-world task to demonstrate transfer from UR5+AG95 to UR5+Xhand. Although we have not yet trained a 2D diffusion policy on this specific task, the high realism of the synthesized images and the simulation results provide preliminary evidence that the reliance on depth cameras could be effectively eliminated.
+    </p>    
   </div>
 </section>
 
